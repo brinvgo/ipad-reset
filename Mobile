@@ -1,0 +1,189 @@
+# iPad A2316 Reset â€“ Linux Quick Reference
+
+**Copy-paste while working. Terminal-legible, full detail.**
+
+---
+
+## STEP 1: Install Packages
+
+**Open terminal (Ctrl+Alt+T), paste:**
+
+```bash
+sudo zypper refresh && \
+sudo zypper install -y \
+  libusbmuxd-dev libplist-dev libplist++-dev libzip-dev \
+  libimobiledevice6 libimobiledevice-utils \
+  libirecovery6 libirecovery-utils idevicerestore
+```
+
+**Wait for "Done."** (2-5 minutes)
+
+---
+
+## STEP 2: Optional - Avoid Sudo Prompts
+
+**Paste:**
+
+```bash
+sudo usermod -a -G plugdev $USER
+```
+
+**Then:** Log out and log back in (or restart)
+
+---
+
+## STEP 3: iPad to Recovery Mode
+
+**Physical steps (no computer yet):**
+
+1. **Volume Up** - quick press/release
+2. **Volume Down** - quick press/release
+3. **Power** - press and hold
+4. Keep holding until **Apple logo appears**
+5. Keep holding **even after logo shows**
+6. After ~15 seconds, screen changes to **cable icon**
+7. **Release Power**
+
+**Confirm:** Apple logo + cable pointing to computer = **Recovery Mode [OK]**
+
+---
+
+## STEP 4: Connect to Linux PC
+
+**Physical connection:**
+
+- USB-C into iPad charging port
+- Other end into USB 3.0 port on computer
+- Wait 3-5 seconds
+
+---
+
+## STEP 5: Verify Detection
+
+**Terminal paste:**
+
+```bash
+idevice_id -l
+```
+
+**Expected:** Long alphanumeric string (UDID)
+
+```
+e1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6
+```
+
+**See nothing?** Try:
+
+```bash
+sudo idevice_id -l
+```
+
+**When you see UDID >> Device ready**
+
+---
+
+## STEP 6: Main Restore Command
+
+**Terminal paste:**
+
+```bash
+sudo idevicerestore -e
+```
+
+**Watch for:**
+
+```
+Connecting to device...
+Downloading firmware...
+[====================] 100%
+
+Installing firmware...
+[====================] 100%
+
+Restoring device...
+[====================] 100%
+
+Done! Device restored and erased.
+```
+
+**TIME: Takes 15-45 minutes (don't interrupt)**
+
+---
+
+## STEP 7: After Restore
+
+**When you see "Done!":**
+
+1. Unplug USB-C from iPad
+2. iPad auto-reboots (black >> logo >> setup)
+3. Wait 2-3 minutes for full boot
+
+---
+
+## STEP 8: Finished
+
+**iPad shows "Hello" setup screen**
+
+Passcode: **completely gone**
+
+Skip setup for instant access, or configure normally
+
+---
+
+## QUICK TROUBLESHOOTING
+
+### Device not detected
+
+```bash
+sudo idevice_id -l
+```
+
+If still nothing: **unplug/replug cable, try different USB port**
+
+### Command not found
+
+```bash
+sudo zypper install -y idevicerestore
+```
+
+### Permission errors
+
+Add `sudo` to commands, or complete Step 2 and restart
+
+### Restore hangs at "Restoring device..."
+
+**Expected.** Firmware is slow. Let it run 30+ minutes. **Don't interrupt.**
+
+### Device exits recovery mode mid-restore
+
+**Unplug, re-enter recovery (Step 3), try again**
+
+### iPad won't boot post-restore
+
+**Plug to power for 5 minutes (low battery)**
+
+---
+
+## DFU Mode Fallback
+
+**If recovery mode fails:**
+
+1. Connect USB cable
+2. **Volume Up** - quick press/release
+3. **Volume Down** - quick press/release
+4. **Power** - hold 3 seconds
+5. **While holding Power, also hold Volume Down** ~10 seconds
+6. Release Power, keep **Volume Down** another ~5 seconds
+7. Screen goes **black (no logo)** = DFU mode
+
+**Then run:**
+
+```bash
+sudo idevicerestore -e
+```
+
+---
+
+**Author:** Brian Vargo
+**Format:** Terminal copy-paste workflow, ASCII-only for compatibility
+**Status:** openSUSE Leap 15.5+ | Results may vary
