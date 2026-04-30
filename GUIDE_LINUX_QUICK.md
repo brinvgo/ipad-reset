@@ -9,11 +9,7 @@
 **Open terminal (Ctrl+Alt+T), paste:**
 
 ```bash
-sudo zypper refresh && \
-sudo zypper install -y \
-  libusbmuxd-dev libplist-dev libplist++-dev libzip-dev \
-  libimobiledevice6 libimobiledevice-utils \
-  libirecovery6 libirecovery-utils idevicerestore
+bash SETUP.sh
 ```
 
 **Wait for "Done."** (2-5 minutes)
