@@ -133,7 +133,7 @@ echo "4. Run: idevice_id -l (verify detection)"
 echo "5. Run: sudo idevicerestore -e (main restore)"
 echo ""
 echo "Optional: Add user to plugdev group (avoid sudo prompts):"
-echo "  sudo usermod -a -G plugdev \$USER"
+echo "  sudo usermod -a -G plugdev \"\$USER\""
 echo "  Then log out and log back in"
 ```
 
