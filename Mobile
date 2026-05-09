@@ -25,7 +25,7 @@ sudo zypper install -y \
 **Paste:**
 
 ```bash
-sudo usermod -a -G plugdev $USER
+sudo usermod -a -G plugdev "$USER"
 ```
 
 **Then:** Log out and log back in (or restart)
